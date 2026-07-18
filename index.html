@@ -569,14 +569,19 @@ try {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: SYSTEM_INSTRUCTION + "\n\nالمستخدم: " + userText }] }]
+                contents: [
+                    {
+                        role: "user",
+                        parts: [{ text: SYSTEM_INSTRUCTION + "\n\nالسؤال الحالي: " + userText }]
+                    }
+                ]
             })
         });
 
         const data = await response.json();
         
         // إزالة مؤشر التحميل
-        loadingDiv.remove();
+        if (typeof loadingDiv !== 'undefined') loadingDiv.remove();
 
         if (data.candidates && data.candidates[0].content.parts[0].text) {
             let reply = data.candidates[0].content.parts[0].text;
@@ -584,7 +589,7 @@ try {
         } else {
             appendMessage('عذراً، تعذر جلب التبصرة الشرعية حالياً.', 'ai');
         }
-  } catch (error) {
+    } catch (error) {
         if (typeof loadingDiv !== 'undefined') loadingDiv.remove();
         appendMessage('عذراً، تعذر جلب التبصرة الشرعية حالياً.', 'ai');
         console.error(error);
