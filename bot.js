@@ -33,6 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- إعداد واجهة سجل المحادثات ---
     setupHistoryUI(chatMessages);
 
+    // --- إرسال رسالة ترحيبية تلقائية خاصة في صفحة خريطة الدعاء ---
+    if (isDuaaPage) {
+        const duaaWelcomeMsg = "أهلاً بك في قسم خريطة الدعاء! 🤲 يمكنك سؤالي هنا عن أي شيء يتعلق بأحكام الدعاء، آدابه، أسباب وموانع الاستجابة، وسأجيبك فوراً مع الأدلة الشرعية بإذن الله.";
+        appendBotMessage(duaaWelcomeMsg, 'bot');
+        
+        currentChatHistory.push({ role: "assistant", content: duaaWelcomeMsg });
+        localStorage.setItem('zad_current_active_chat', JSON.stringify(currentChatHistory));
+    }
+
     // --- معالجة إرسال الرسائل ---
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
