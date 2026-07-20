@@ -1,15 +1,20 @@
 // 1. رابط خادم الأمان الخاص بك في Cloudflare
 const WORKER_URL = "https://zad-bot-proxy.almohanadgamer.workers.dev";
 
-// 2. فحص الصفحة الحالية لتحديد السياق (مثل صفحة خريطة الدعاء)
+// 2. فحص الصفحة الحالية لتحديد السياق
 const isDuaaPage = window.location.pathname.includes('duaa.html');
+const isAzkarPage = window.location.pathname.includes('azkar.html');
 
-// 3. بناء تعليمات النظام الديناميكية (تحديد ضابط السلام الصارم)
+// 3. بناء تعليمات النظام الديناميكية
 let SYSTEM_INSTRUCTION = "أنت باحث شرعي ومفتي رقمي مساعد في موقع 'زاد المؤمن'، المطوّر والمصمّم من قِبَل (عمر). مهمتك الإجابة حصراً على الأسئلة الشرعية والدينية والفقهية بكل أدب واحترام. يُلزم عليك دائماً وأبداً دعم جميع الفتاوى والأحكام بذكر الأدلة الشرعية الصريحة والمباشرة من آيات القرآن الكريم والأحاديث النبوية الصحيحة مع ذكر تخريج الحديث (مثل: رواه البخاري، رواه مسلم، صححه الألباني)، والاعتماد على مصادر كبار علماء السنة مثل ابن باز وابن عثيمين وعثمان الخميس وغيرهم مع ذكر المصادر دائماً.\n\nتنبيهات صارمة جداً وضوابط عمل:\n1. مطوّر البوت والموقع: إذا سألك المستخدم من هو مطوّر أو صانع أو مبرمج هذا الموقع/البوت، أجب بوضوح واعتزاز بأن المطوّر والصانع هو (عمر).\n2. التخصص الحصري: إذا كان سؤال المستخدم خارج نطاق العلوم الشرعية والدين الإسلامي (مثل: الألعاب، البرمجة، الرياضة، الطقس، الأسئلة العامة)، يرجى الاعتذار منه بكل أدب ولطف، وإخباره بأنك مساعد مخصص حصراً للإجابات والعلوم الشرعية والدينية في موقع 'زاد المؤمن'.\n3. ضابط السلام الصارم: لا تبدأ إجابتك بالسلام ولا الترحيب (مثل: 'وعليكم السلام' أو 'أهلاً بك') إطلاقاً إلا إذا كتب المستخدم صراحة وبنص العبارة 'السلام عليكم' أو صيغها المباشرة (السلام عليكم / السلام عليكم ورحمة الله / السلام عليكم ورحمة الله وبركاته). أما إذا كتب كلمات مثل 'أهلاً' أو 'مرحباً' أو طرَح سؤاله مباشرة، فلا ترد بالسلام أبداً وابدأ بالإجابة مباشرة.";
 
-// إضافة سياق خريطة الدعاء تلقائياً إذا كان المستخدم في صفحة duaa.html
+// إضافة سياق خريطة الدعاء
 if (isDuaaPage) {
-    SYSTEM_INSTRUCTION += "\n4. سياق خاص بصفحة 'خريطة الدعاء': المستخدم يتصفح حالياً قسم خريطة الدعاء في الموقع. يُرجى تقديم إجابات متخصصة ومفصلة تدعم مفاهيم هذا القسم (تعريف الدعاء، علاقته بالقدر المبرم والمعلق، أسباب وشروط الاستجابة، موانع الاستجابة، وآداب الدعاء، والرد على الشبهات المعاصرة حول الدعاء) والإجابة عن أي استفسار يخص هذه المفاهيم بدقة وجلب المعلومات من العلماء الكبار مثل ابن باز وابن عثيمين وعثمان الخميس والدرر السنية.";
+    SYSTEM_INSTRUCTION += "\n4. سياق خاص بصفحة 'خريطة الدعاء': المستخدم يتصفح حالياً قسم خريطة الدعاء. يُرجى تقديم إجابات متخصصة تدعم مفاهيم هذا القسم (تعريف الدعاء، علاقته بالقدر المبرم والمعلق، أسباب وشروط الاستجابة، موانع الاستجابة، وآداب الدعاء، والرد على الشبهات).";
+} 
+// إضافة سياق قسم الأذكار اليومية
+else if (isAzkarPage) {
+    SYSTEM_INSTRUCTION += "\n4. سياق خاص بصفحة 'الأذكار اليومية': المستخدم يتصفح حالياً قسم الأذكار. يُرجى تقديم إجابات متخصصة تدعم فضائل الأذكار (أذكار الصباح والمساء، أذكار الاستيقاظ والنوم، أذكار بعد الصلاة) وأحكام المداومة عليها وأوقاتها الشرعية الصحيحة.";
 }
 
 // 4. إدارة الجلسات والأرشيف
@@ -23,26 +28,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!chatForm || !chatInput || !chatMessages) return;
 
-    // --- نقل المحادثة السابقة للأرشيف عند دخول الموقع من جديد ---
+    // نقل المحادثة السابقة للأرشيف عند دخول الموقع من جديد
     const lastActiveChat = JSON.parse(localStorage.getItem('zad_current_active_chat'));
     if (lastActiveChat && lastActiveChat.length > 0) {
         archiveCurrentChat(lastActiveChat);
-        localStorage.removeItem('zad_current_active_chat'); // تصفير الشات الرئيسي
+        localStorage.removeItem('zad_current_active_chat');
     }
 
-    // --- إعداد واجهة سجل المحادثات ---
     setupHistoryUI(chatMessages);
 
-    // --- إرسال رسالة ترحيبية تلقائية خاصة في صفحة خريطة الدعاء ---
+    // ترحيب خاص بصفحة خريطة الدعاء
     if (isDuaaPage) {
         const duaaWelcomeMsg = "أهلاً بك في قسم خريطة الدعاء! 🤲 يمكنك سؤالي هنا عن أي شيء يتعلق بأحكام الدعاء، آدابه، أسباب وموانع الاستجابة، وسأجيبك فوراً مع الأدلة الشرعية بإذن الله.";
         appendBotMessage(duaaWelcomeMsg, 'bot');
-        
         currentChatHistory.push({ role: "assistant", content: duaaWelcomeMsg });
+        localStorage.setItem('zad_current_active_chat', JSON.stringify(currentChatHistory));
+    } 
+    // ترحيب خاص بصفحة الأذكار اليومية
+    else if (isAzkarPage) {
+        const azkarWelcomeMsg = "أهلاً بك في ركن الأذكار! 📿 يمكنك سؤالي عن فضائل الأذكار، أوقاتها الشرعية، أو أحكام المداومة عليها وسأجيبك فوراً بالأدلة الشرعية الموثقة بإذن الله.";
+        appendBotMessage(azkarWelcomeMsg, 'bot');
+        currentChatHistory.push({ role: "assistant", content: azkarWelcomeMsg });
         localStorage.setItem('zad_current_active_chat', JSON.stringify(currentChatHistory));
     }
 
-    // --- معالجة إرسال الرسائل ---
+    // معالجة إرسال الرسائل
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const userText = chatInput.value.trim();
@@ -68,9 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(WORKER_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     model: "deepseek-chat",
                     messages: messagesPayload,
@@ -78,17 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 })
             });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
             let botResponse = data.choices[0].message.content;
 
-            // فلترة السلام برمجياً: التحقق فقط من وجود عبارة "السلام عليكم" الصريحة في نص المستخدم
             const userSaidSalam = /السلام\s+عليكم/i.test(userText);
             if (!userSaidSalam) {
-                // يمسح أي سلام أو ترحيب يضعه البوت من البداية
                 botResponse = botResponse.replace(/^(وعليكم السلام ورحمة الله وبركاته|وعليكم السلام ورحمة الله|وعليكم السلام|السلام عليكم ورحمة الله وبركاته|السلام عليكم|أهلاً وسهلاً بك|أهلاً بك|مرحباً بك|مرحباً|أهلاً)[!،.\n\s]*/gi, '').trim();
             }
 
@@ -109,16 +113,50 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // طباعة الرسائل وإضافة زر النسخ والواتساب
     function appendBotMessage(text, sender, isLoading = false) {
         const msgDiv = document.createElement('div');
         
         if (sender === 'user') {
             msgDiv.style.cssText = "background: #d6a85c; color: #1a1200; padding: 10px 14px; border-radius: 14px 14px 0 14px; align-self: flex-end; max-width: 85%; font-weight: bold; font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px;";
+            msgDiv.innerHTML = text.replace(/\n/g, '<br>');
         } else {
             msgDiv.style.cssText = "background: rgba(255,255,255,0.06); color: #f3efe3; padding: 10px 14px; border-radius: 14px 14px 14px 0; align-self: flex-start; max-width: 85%; font-size: 0.9rem; line-height: 1.6; margin-bottom: 8px;";
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.innerHTML = text.replace(/\n/g, '<br>');
+            msgDiv.appendChild(contentDiv);
+
+            // أزرار التفاعل (نسخ + واتساب) تظهر فقط مع ردود البوت المكتملة
+            if (!isLoading) {
+                const actionsDiv = document.createElement('div');
+                actionsDiv.style.cssText = "display: flex; gap: 8px; margin-top: 10px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;";
+                
+                // زر النسخ
+                const copyBtn = document.createElement('button');
+                copyBtn.innerHTML = "📋 نسخ النص";
+                copyBtn.style.cssText = "background: rgba(214, 168, 92, 0.15); border: 1px solid rgba(214, 168, 92, 0.4); color: #d6a85c; padding: 3px 8px; border-radius: 5px; cursor: pointer; transition: 0.2s;";
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(text);
+                    copyBtn.innerHTML = "✅ تم النسخ!";
+                    setTimeout(() => copyBtn.innerHTML = "📋 نسخ النص", 2000);
+                };
+
+                // زر الواتساب
+                const waBtn = document.createElement('button');
+                waBtn.innerHTML = "🟢 مشاركة بالواتساب";
+                waBtn.style.cssText = "background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.4); color: #25D366; padding: 3px 8px; border-radius: 5px; cursor: pointer; transition: 0.2s;";
+                waBtn.onclick = () => {
+                    const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent("*من موقع زاد المؤمن:*\n\n" + text + "\n\n🔗 " + window.location.href)}`;
+                    window.open(shareUrl, '_blank');
+                };
+
+                actionsDiv.appendChild(copyBtn);
+                actionsDiv.appendChild(waBtn);
+                msgDiv.appendChild(actionsDiv);
+            }
         }
 
-        msgDiv.innerHTML = text.replace(/\n/g, '<br>');
         chatMessages.appendChild(msgDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
         return msgDiv;
@@ -127,30 +165,22 @@ document.addEventListener('DOMContentLoaded', () => {
     function archiveCurrentChat(messages) {
         if (!messages || messages.length === 0) return;
         const timeString = new Date().toLocaleString('ar-SA', { dateStyle: 'short', timeStyle: 'short' });
-        archivedChats.unshift({
-            id: Date.now(),
-            date: timeString,
-            messages: messages
-        });
+        archivedChats.unshift({ id: Date.now(), date: timeString, messages: messages });
         localStorage.setItem('zad_archived_chats', JSON.stringify(archivedChats));
     }
 
-    // --- واجهة سجل المحادثات واستكمال الجلسات ---
     function setupHistoryUI(container) {
         const headerBar = document.createElement('div');
         headerBar.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; margin-bottom: 10px; background: rgba(0,0,0,0.2); border-radius: 8px;";
-        
         headerBar.innerHTML = `
             <span style="font-size: 0.85rem; color: #d6a85c; font-weight: bold;">💬 المحادثة الحالية</span>
             <button id="open-history-btn" style="background: rgba(214, 168, 92, 0.15); border: 1px solid #d6a85c; color: #d6a85c; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">📜 سجل المحادثات</button>
         `;
-
         container.parentNode.insertBefore(headerBar, container);
 
         const modal = document.createElement('div');
         modal.id = 'history-modal';
         modal.style.cssText = "display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center; padding: 20px;";
-        
         modal.innerHTML = `
             <div style="background: #181512; border: 1px solid #d6a85c; width: 100%; max-width: 500px; max-height: 80vh; border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; color: #f3efe3;">
                 <div style="padding: 12px 16px; background: rgba(214,168,92,0.1); border-bottom: 1px solid rgba(214,168,92,0.2); display: flex; justify-content: space-between; align-items: center;">
