@@ -829,5 +829,58 @@ document.addEventListener('click', (e) => { if (!navMenuBox.contains(e.target) &
 </script>
 
 <script src="bot.js"></script>
+<!-- ==================== بنر تثبيت التطبيق الذكي (أندرويد + آيفون) ==================== -->
+<div id="smart-app-banner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9998; width: 92%; max-width: 480px; background: linear-gradient(135deg, #0f1730, #141d3d); border: 1px solid rgba(214, 168, 92, 0.4); border-radius: 18px; padding: 14px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); backdrop-filter: blur(12px); color: #f3efe3; font-family: 'Tajawal', sans-serif;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 2rem;">🌙</span>
+            <div>
+                <div style="font-weight: bold; color: #f0d9a8; font-size: 0.95rem;">تطبيق "زاد المؤمن"</div>
+                <div id="banner-text" style="font-size: 0.8rem; color: #93a0c2; line-height: 1.4; margin-top: 2px;"></div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <!-- زر الأندرويد لتنزيل APK -->
+            <a id="apk-download-btn" href="zad-al-momen.apk" download style="display: none; background: linear-gradient(135deg, #d6a85c, #b9803a); color: #1a1200; font-weight: bold; padding: 8px 14px; border-radius: 10px; text-decoration: none; font-size: 0.82rem; white-space: nowrap;">تحميل APK 📲</a>
+            <button id="banner-close-btn" style="background: none; border: none; color: #93a0c2; font-size: 1.2rem; cursor: pointer; padding: 4px;">✕</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('smart-app-banner');
+    const bannerText = document.getElementById('banner-text');
+    const apkBtn = document.getElementById('apk-download-btn');
+    const closeBtn = document.getElementById('banner-close-btn');
+
+    if (!banner) return;
+
+    // عدم إظهار البنر إذا كان الموقع مفتوحاً بالفعل كتطبيق أو إذا أغلقه الزائر مؤقتاً
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone || sessionStorage.getItem('pwa_banner_closed')) return;
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isAndroid = /android/.test(ua);
+
+    // 1. للآيفون: عرض إرشادات إضافة الشاشة الرئيسية
+    if (isIOS) {
+        bannerText.innerHTML = 'للآيفون: اضغط <span style="color:#d6a85c; font-weight:bold;">مشاركة 📤</span> ثم اختر <span style="color:#d6a85c; font-weight:bold;">(إضافة إلى الشاشة الرئيسية)</span>';
+        banner.style.display = 'block';
+    } 
+    // 2. للأندرويد: إظهار زر تحميل ملف الـ APK المباشر
+    else if (isAndroid) {
+        bannerText.innerText = 'ثبّت تطبيق الأندرويد المباشر (APK) لتصفح أسرع وأسهل!';
+        apkBtn.style.display = 'inline-block';
+        banner.style.display = 'block';
+    }
+
+    closeBtn.addEventListener('click', () => {
+        banner.style.display = 'none';
+        sessionStorage.setItem('pwa_banner_closed', 'true');
+    });
+});
+</script>
 </body>
 </html>
