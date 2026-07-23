@@ -1761,6 +1761,78 @@ body.is-native-app .chat-widget-btn {
 body.is-native-app {
     padding-bottom: 95px !important;
 }
+/* =========================================================
+   ✨ كبسولة توقيت مكة والتاريخ الهجري الموحدة للجوال
+   ========================================================= */
+#time-hijri-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin: 12px auto 18px !important;
+    padding: 8px 16px !important;
+    width: fit-content !important;
+    max-width: 92% !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(214, 168, 92, 0.3) !important;
+    border-radius: 30px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+#makkah-time-badge, #hijri-date-badge {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+#makkah-time-text {
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: #f0d9a8 !important;
+    white-space: nowrap !important;
+}
+
+#hijri-date-text {
+    font-family: 'Amiri', serif !important;
+    font-size: 0.9rem !important;
+    color: #d6a85c !important;
+    white-space: nowrap !important;
+}
+
+#makkah-time-badge, #hijri-date-badge {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+#makkah-time-text {
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: #f0d9a8 !important;
+    white-space: nowrap !important;
+}
+
+#hijri-date-text {
+    font-family: 'Amiri', serif !important;
+    font-size: 0.9rem !important;
+    color: #d6a85c !important;
+    white-space: nowrap !important;
+}
+
+/* فاصل ناعم بين الوقت والتاريخ */
+#time-hijri-container::after {
+    content: '';
+}
 </style>
 
 <script>

@@ -50,7 +50,7 @@ async function initNotifications() {
 }
 
 // =========================================================
-// 2. ساعة حية لتوقيت مكة المكرمة (تحدّث الهيدر والصفحة معاً)
+// 2. ساعة حية لتوقيت مكة المكرمة (تحدث الهيدر والكبسولة معاً)
 // =========================================================
 function startMakkahClock() {
     function updateClock() {
@@ -63,7 +63,7 @@ function startMakkahClock() {
             hour12: true
         };
         const timeStr = now.toLocaleTimeString('ar-SA', timeOptions);
-        const textStr = `🕋 توقيت مكة: ${timeStr}`;
+        const textStr = `🕋 مكة: ${timeStr}`;
 
         const elemBody = document.getElementById('makkah-time-text');
         const elemHeader = document.getElementById('app-makkah-clock');
@@ -293,7 +293,7 @@ function injectAppHeader() {
     topBar.className = 'app-top-bar';
     topBar.innerHTML = `
         <div class="app-top-info">
-            <div id="app-makkah-clock" style="font-weight: bold;">🕋 توقيت مكة: جاري...</div>
+            <div id="app-makkah-clock" style="font-weight: bold;">🕋 مكة: جاري...</div>
             <div id="app-hijri-date" style="font-size: 0.72rem; opacity: 0.85;">📅 جاري التحديث...</div>
         </div>
         <div style="font-family: 'Amiri', serif; font-size: 1.1rem; font-weight: bold; color: #f0d9a8;">زاد المؤمن 🌙</div>
