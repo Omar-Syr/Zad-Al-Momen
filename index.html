@@ -605,6 +605,27 @@ body.is-native-app {
     </div>
 </div>
 
+<!-- ==================== كارت حديث اليوم ==================== -->
+<div style="position: relative; z-index: 1; background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)); border: 1px solid var(--border-glass); backdrop-filter: blur(14px); border-radius: 20px; padding: 22px; margin: 0 auto 26px; max-width: 600px; text-align: right;">
+    <h3 style="margin: 0 0 10px; color: var(--gold-soft); font-size: 1.2rem; font-family: 'Amiri', serif; display: flex; align-items: center; gap: 8px;">
+        <span>📜</span> حديث اليوم النبوي
+    </h3>
+    <p id="daily-hadith-text" style="font-family: 'Amiri', serif; font-size: 1.15rem; color: var(--text-main); line-height: 2; margin: 0 0 10px;"></p>
+    <div id="daily-hadith-meta" style="font-size: 0.8rem; color: var(--teal);"></div>
+</div>
+
+<script>
+const hadithsList = [
+    { text: "«إنَّ العبدَ ليَتَكلَّمُ بالكلمةِ من رضوانِ اللهِ تعالى لا يُلقي لها بالاً، يرفَعُه بها درجاتٍ، وإنَّ العبدَ ليَتَكلَّمُ بالكلمةِ من سَخَطِ اللهِ لا يُلقي لها بالاً، يهوي بها في جهنَّمَ»", meta: "صحيح البخاري" },
+    { text: "«مكسِبُ المؤمنِ كلُّه خيرٌ؛ إنْ أصابته سُرَّاءُ شَكَرَ فكان خيراً له، وإنْ أصابته ضَرَّاءُ صَبَرَ فكان خيراً له»", meta: "صحيح مسلم" },
+    { text: "«من سلك طريقاً يلتمس فيه علماً سهّل الله له به طريقاً إلى الجنة»", meta: "صحيح مسلم" }
+];
+// اختيار حديث عشوائي بناءً على يوم السنة الحالي
+const dayIndex = Math.floor(Date.now() / (1000 * 60 * 60 * 24)) % hadithsList.length;
+document.getElementById('daily-hadith-text').innerText = hadithsList[dayIndex].text;
+document.getElementById('daily-hadith-meta').innerText = "الراوي: متعدد | التخريج: " + hadithsList[dayIndex].meta;
+</script>
+
 <!-- شريط البحث الفخمة لتصفية الأقسام والبحث التلقائي -->
 <div class="search-wrap">
   <div class="search-box">

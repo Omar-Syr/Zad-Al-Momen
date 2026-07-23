@@ -299,11 +299,12 @@
   body.light #stars{opacity:0.25;}
   body.light .zkr-item { background: rgba(0,0,0,0.03); }
   body.light .hadith-search-box { background: rgba(0,0,0,0.02); }
-  
   /* =========================================================
    🚀 التنسيقات المخصصة لـ "واجهة التطبيق الذكي" (App Only UI)
    ========================================================= */
-  body.is-native-app {
+
+body.is-native-app {
+    /* إلغاء تحديد النصوص وتأخير اللمس لزيادة الاستجابة */
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
@@ -311,184 +312,320 @@
     padding-top: env(safe-area-inset-top, 15px) !important;
     padding-bottom: 90px !important;
     background-attachment: fixed;
-  }
+}
 
-  body.is-native-app .nav-dropdown-wrapper,
-  body.is-native-app #smart-app-banner,
-  body.is-native-app .theme-btn {
-      display: none !important;
-  }
+/* إخفاء عناصر القوائم والملاحة الخاصة بالموقع داخل التطبيق */
+body.is-native-app .nav-dropdown-wrapper,
+body.is-native-app #smart-app-banner,
+body.is-native-app .theme-btn {
+    display: none !important;
+}
 
-  .app-top-bar { display: none; }
-  body.is-native-app .app-top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 20px;
-      background: rgba(15, 23, 48, 0.7);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      border-bottom: 1px solid rgba(214, 168, 92, 0.2);
-      position: sticky;
-      top: 0;
-      z-index: 999;
-  }
+/* 📱 شريط علوي احترافي للتطبيق (App Header Bar) */
+.app-top-bar {
+    display: none;
+}
+body.is-native-app .app-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(15, 23, 48, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(214, 168, 92, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
 
-  body.is-native-app .main-grid {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 14px !important;
-      padding: 0 16px !important;
-  }
+/* 📿 إعادة تشكيل الكروت لتصبح على شكل قائمة تطبيق جوال (App List Rows) */
+body.is-native-app .main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 0 16px !important;
+}
 
-  body.is-native-app .portal-card {
-      min-height: auto !important;
-      flex-direction: row !important;
-      justify-content: flex-start !important;
-      text-align: right !important;
-      padding: 16px 20px !important;
-      border-radius: 18px !important;
-      background: rgba(255, 255, 255, 0.04) !important;
-      border: 1px solid rgba(214, 168, 92, 0.25) !important;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
-  }
+body.is-native-app .portal-card {
+    min-height: auto !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    text-align: right !important;
+    padding: 16px 20px !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(214, 168, 92, 0.25) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
 
-  body.is-native-app .portal-card:active {
-      transform: scale(0.97) !important;
-      background: rgba(214, 168, 92, 0.1) !important;
-      transition: transform 0.1s ease !important;
-  }
+body.is-native-app .portal-card:active {
+    transform: scale(0.97) !important;
+    background: rgba(214, 168, 92, 0.1) !important;
+    transition: transform 0.1s ease !important;
+}
 
-  body.is-native-app .portal-icon {
-      font-size: 2.2rem !important;
-      margin-bottom: 0 !important;
-      margin-left: 15px !important;
-  }
+body.is-native-app .portal-icon {
+    font-size: 2.2rem !important;
+    margin-bottom: 0 !important;
+    margin-left: 15px !important;
+}
 
-  body.is-native-app .portal-title {
-      font-size: 1.2rem !important;
-      margin-bottom: 2px !important;
-  }
+body.is-native-app .portal-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 2px !important;
+}
 
-  body.is-native-app .portal-desc {
-      font-size: 0.8rem !important;
-      max-width: 100% !important;
-  }
+body.is-native-app .portal-desc {
+    font-size: 0.8rem !important;
+    max-width: 100% !important;
+}
 
-  body.is-native-app .portal-btn {
-      display: none !important;
-  }
+body.is-native-app .portal-btn {
+    display: none !important; /* إخفاء زر "دخول القسم" للتبسيط */
+}
 
-  .liquid-bottom-nav {
-      position: fixed;
-      bottom: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 92%;
-      max-width: 400px;
-      height: 62px;
-      background: rgba(15, 23, 48, 0.75);
-      backdrop-filter: blur(25px) saturate(200%);
-      -webkit-backdrop-filter: blur(25px) saturate(200%);
-      border: 1px solid rgba(214, 168, 92, 0.35);
-      border-radius: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      z-index: 99999;
-  }
+/* 🧭 الشريط السفلي السائل (Liquid Bottom Dock) */
+.liquid-bottom-nav {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 400px;
+    height: 62px;
+    background: rgba(15, 23, 48, 0.75);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(214, 168, 92, 0.35);
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+}
 
-  .liquid-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #93a0c2;
-      background: none;
-      border: none;
-      font-family: 'Tajawal', sans-serif;
-      font-size: 0.72rem;
-      font-weight: bold;
-      gap: 2px;
-      text-decoration: none;
-      width: 22%;
-      height: 100%;
-      border-radius: 20px;
-  }
+.liquid-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #93a0c2;
+    background: none;
+    border: none;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.72rem;
+    font-weight: bold;
+    gap: 2px;
+    text-decoration: none;
+    width: 22%;
+    height: 100%;
+    border-radius: 20px;
+}
 
-  .liquid-nav-item.active {
-      color: #f0d9a8;
-      background: rgba(214, 168, 92, 0.15);
-  }
+.liquid-nav-item.active {
+    color: #f0d9a8;
+    background: rgba(214, 168, 92, 0.15);
+}
 
-  .liquid-nav-item:active {
-      transform: scale(0.92);
-  }
+.liquid-nav-item:active {
+    transform: scale(0.92);
+}
+/* =========================================================
+   🌅 التأثيرات التفاعلية للشمس والقمر حسب وقت اليوم
+   ========================================================= */
 
-  .moon.state-sun-day {
-      background: radial-gradient(circle at 35% 30%, #fff7d1, #ffd700 55%, #ff9100 100%) !important;
-      box-shadow: 0 0 70px 18px rgba(255, 215, 0, 0.65), 0 0 130px 45px rgba(255, 145, 0, 0.28) !important;
-      transform: translateY(-5px) scale(1.05);
-  }
+/* 1. حالة النهار والظهر (شمس مشعة ذهبية) */
+.moon.state-sun-day {
+    background: radial-gradient(circle at 35% 30%, #fff7d1, #ffd700 55%, #ff9100 100%) !important;
+    box-shadow: 0 0 70px 18px rgba(255, 215, 0, 0.65), 0 0 130px 45px rgba(255, 145, 0, 0.28) !important;
+    transform: translateY(-5px) scale(1.05);
+}
 
-  .moon.state-sun-sunset {
-      background: radial-gradient(circle at 35% 30%, #ffb703, #fb8500 60%, #d62828 100%) !important;
-      box-shadow: 0 0 55px 14px rgba(251, 133, 0, 0.55), 0 0 110px 38px rgba(214, 40, 40, 0.22) !important;
-      transform: translateY(12px) scale(0.95);
-  }
+/* 2. حالة العصر والغروب (شمس برتقالية دافئة تغرب رويداً) */
+.moon.state-sun-sunset {
+    background: radial-gradient(circle at 35% 30%, #ffb703, #fb8500 60%, #d62828 100%) !important;
+    box-shadow: 0 0 55px 14px rgba(251, 133, 0, 0.55), 0 0 110px 38px rgba(214, 40, 40, 0.22) !important;
+    transform: translateY(12px) scale(0.95); /* هبوط خفيف محاكي للغروب */
+}
 
-  .moon.state-moon-night {
-      background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 55%, #8a6a34 100%) !important;
-      box-shadow: 0 0 60px 10px rgba(214,168,92,0.45), 0 0 120px 40px rgba(214,168,92,0.15) !important;
-      transform: translateY(0) scale(1);
-  }
+/* 3. حالة الليل (قمر زاد المؤمن الهادئ) */
+.moon.state-moon-night {
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 55%, #8a6a34 100%) !important;
+    box-shadow: 0 0 60px 10px rgba(214,168,92,0.45), 0 0 120px 40px rgba(214,168,92,0.15) !important;
+    transform: translateY(0) scale(1);
+}
+/* =========================================================
+   📱 تنسيقات الهيدر والشريط السفلي الزجاجي الثابت
+   ========================================================= */
 
-  #time-hijri-container {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 8px !important;
-      margin: 12px auto 18px !important;
-      padding: 8px 16px !important;
-      width: fit-content !important;
-      max-width: 92% !important;
-      background: rgba(15, 23, 42, 0.7) !important;
-      backdrop-filter: blur(14px) !important;
-      -webkit-backdrop-filter: blur(14px) !important;
-      border: 1px solid rgba(214, 168, 92, 0.3) !important;
-      border-radius: 30px !important;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
-      position: relative !important;
-      z-index: 10 !important;
-  }
+/* 1. الهيدر العلوي الثابت */
+.app-top-bar {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 99999 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 16px !important;
+    background: rgba(15, 23, 42, 0.9) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(214, 168, 92, 0.25) !important;
+}
 
-  #makkah-time-badge, #hijri-date-badge {
-      background: transparent !important;
-      border: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      box-shadow: none !important;
-  }
+.app-top-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.8rem;
+    color: #f0d9a8;
+}
 
-  #makkah-time-text {
-      font-family: 'Tajawal', sans-serif !important;
-      font-size: 0.82rem !important;
-      font-weight: 700 !important;
-      color: #f0d9a8 !important;
-      white-space: nowrap !important;
-  }
+/* 2. الشريط السفلي الزجاجي الثابت (Floating Glass Bar) */
+.liquid-bottom-nav {
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: calc(100% - 32px) !important;
+    max-width: 380px !important;
+    height: 64px !important;
+    background: rgba(15, 23, 42, 0.88) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(214, 168, 92, 0.35) !important;
+    border-radius: 35px !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    z-index: 999999 !important;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+    padding: 0 10px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
 
-  #hijri-date-text {
-      font-family: 'Amiri', serif !important;
-      font-size: 0.9rem !important;
-      color: #d6a85c !important;
-      white-space: nowrap !important;
-  }
-  </style>
-  <link rel="stylesheet" href="app.css">
+/* أزرار التنقل */
+.liquid-nav-item {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+    color: #94a3b8 !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+    padding: 6px 14px !important;
+    border-radius: 22px !important;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease !important;
+}
+
+.liquid-nav-item:active {
+    transform: scale(0.88) !important;
+}
+
+.liquid-nav-item.active {
+    color: #f0d9a8 !important;
+    background: rgba(214, 168, 92, 0.18) !important;
+}
+
+/* رفع زر المحادثة فوق الشريط */
+body.is-native-app #chat-trigger-btn,
+body.is-native-app .chat-widget-btn {
+    bottom: 95px !important;
+    left: 20px !important;
+}
+
+body.is-native-app {
+    padding-bottom: 95px !important;
+}
+/* =========================================================
+   ✨ كبسولة توقيت مكة والتاريخ الهجري الموحدة للجوال
+   ========================================================= */
+#time-hijri-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin: 12px auto 18px !important;
+    padding: 8px 16px !important;
+    width: fit-content !important;
+    max-width: 92% !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(214, 168, 92, 0.3) !important;
+    border-radius: 30px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+#makkah-time-badge, #hijri-date-badge {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+#makkah-time-text {
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: #f0d9a8 !important;
+    white-space: nowrap !important;
+}
+
+#hijri-date-text {
+    font-family: 'Amiri', serif !important;
+    font-size: 0.9rem !important;
+    color: #d6a85c !important;
+    white-space: nowrap !important;
+}
+
+#makkah-time-badge, #hijri-date-badge {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+#makkah-time-text {
+    font-family: 'Tajawal', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    color: #f0d9a8 !important;
+    white-space: nowrap !important;
+}
+
+#hijri-date-text {
+    font-family: 'Amiri', serif !important;
+    font-size: 0.9rem !important;
+    color: #d6a85c !important;
+    white-space: nowrap !important;
+}
+
+/* فاصل ناعم بين الوقت والتاريخ */
+#time-hijri-container::after {
+    content: '';
+}
+</style>
+<link rel="stylesheet" href="app.css">
+
 </head>
 <body>
+
 
 <canvas id="stars"></canvas>
 <button class="theme-btn" id="themeBtn" aria-label="تبديل الوضع">🌞</button>
@@ -510,13 +647,12 @@
   <h1>الأذكار اليومية والمأثورة عن النبي ﷺ</h1>
   <p class="tagline">زادك اليومي من الأدعية المأثورة والكنوز النبوية ليكون قلبك معلقاً بالله في كل لحظة.</p>
 </div>
-
 <!-- شريط توقيت مكة المكرمة والتقويم الهجري اليومي -->
-<div id="time-hijri-container">
-    <div id="makkah-time-badge">
+<div id="time-hijri-container" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; margin: 12px auto 0; position: relative; z-index: 5;">
+    <div id="makkah-time-badge" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(214, 168, 92, 0.12); border: 1px solid var(--border-glass); padding: 6px 14px; border-radius: 20px; color: var(--gold-soft); font-family: 'Tajawal', sans-serif; font-size: 0.92rem; font-weight: bold;">
         <span id="makkah-time-text">🕋 توقيت مكة: --:--:--</span>
     </div>
-    <div id="hijri-date-badge">
+    <div id="hijri-date-badge" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(214, 168, 92, 0.12); border: 1px solid var(--border-glass); padding: 6px 14px; border-radius: 20px; color: var(--gold-soft); font-family: 'Amiri', serif; font-size: 1.05rem;">
         <span id="hijri-date-text">📅 جاري جلب التاريخ الهجري...</span>
     </div>
 </div>
@@ -527,25 +663,42 @@
         <span>📊 نسبة إتمام أذكار العدادات اليومية</span>
         <span id="azkar-progress-text" style="color: #f0d9a8; font-family: monospace; font-size: 1.1rem;">0%</span>
     </div>
-    
     <!-- ==================== سبحة التسبيح الحرة ==================== -->
-    <div class="azkar-accordion open" style="margin-top: 15px; margin-bottom: 15px; text-align: right;">
-        <div class="accordion-header">
-          <div class="accordion-title">📿 السبحة الإلكترونية الحرة</div>
-          <div class="accordion-icon">▼</div>
-        </div>
-        <div class="accordion-content" style="max-height: 300px;">
-          <div class="accordion-body" style="text-align: center;">
-            <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px;">اضغط في أي مكان لتسبيح ربك</div>
-            <div id="free-counter-screen" style="font-family: monospace; font-size: 2.5rem; font-weight: bold; color: var(--gold-soft); margin-bottom: 15px;">0</div>
-            <div style="display: flex; justify-content: center; gap: 12px;">
-                <button type="button" onclick="incrementFreeCounter()" style="background: linear-gradient(135deg, var(--gold), #b9803a); border: none; color: #1a1200; font-weight: bold; padding: 12px 30px; border-radius: 14px; font-size: 1.1rem; cursor: pointer;">سبّح 👆</button>
-                <button type="button" onclick="resetFreeCounter()" style="background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--text-muted); padding: 12px 16px; border-radius: 14px; cursor: pointer;">🔄 تصفير</button>
-            </div>
-          </div>
-        </div>
+<div class="azkar-accordion open" style="margin-top: 20px;">
+    <div class="accordion-header">
+      <div class="accordion-title">📿 السبحة الإلكترونية الحرة</div>
+      <div class="accordion-icon">▼</div>
     </div>
+    <div class="accordion-content" style="max-height: 300px;">
+      <div class="accordion-body" style="text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px;">اضغط في أي مكان لتسبيح ربك</div>
+        <div id="free-counter-screen" style="font-family: monospace; font-size: 2.5rem; font-weight: bold; color: var(--gold-soft); margin-bottom: 15px;">0</div>
+        <div style="display: flex; justify-content: center; gap: 12px;">
+            <button type="button" onclick="incrementFreeCounter()" style="background: linear-gradient(135deg, var(--gold), #b9803a); border: none; color: #1a1200; font-weight: bold; padding: 12px 30px; border-radius: 14px; font-size: 1.1rem; cursor: pointer;">سبّح 👆</button>
+            <button type="button" onclick="resetFreeCounter()" style="background: none; border: 1px solid rgba(255,255,255,0.2); color: var(--text-muted); padding: 12px 16px; border-radius: 14px; cursor: pointer;">🔄 تصفير</button>
+        </div>
+      </div>
+    </div>
+</div>
 
+<script>
+let freeCount = localStorage.getItem('free_tasbeeh_count') || 0;
+document.getElementById('free-counter-screen').innerText = freeCount;
+
+function incrementFreeCounter() {
+    freeCount++;
+    document.getElementById('free-counter-screen').innerText = freeCount;
+    localStorage.setItem('free_tasbeeh_count', freeCount);
+    if (navigator.vibrate) navigator.vibrate(25);
+}
+
+function resetFreeCounter() {
+    freeCount = 0;
+    document.getElementById('free-counter-screen').innerText = freeCount;
+    localStorage.setItem('free_tasbeeh_count', freeCount);
+    if (navigator.vibrate) navigator.vibrate(15);
+}
+</script>
     <div style="background: rgba(0, 0, 0, 0.4); border-radius: 10px; height: 12px; width: 100%; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);">
         <div id="azkar-progress-bar" style="background: linear-gradient(90deg, #5fd6c4, #d6a85c); height: 100%; width: 0%; transition: width 0.4s ease; border-radius: 10px;"></div>
     </div>
@@ -588,7 +741,6 @@
             <div class="zkr-hint"><span class="zkr-badge">التكرار</span><span>قلها 3 مرات</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 3</div>
               <button class="btn-plus" onclick="countUp(this, 3)">+</button>
             </div>
@@ -603,7 +755,6 @@
             <div class="zkr-hint"><span class="zkr-badge">التكرار</span><span>قلها 3 مرات</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 3</div>
               <button class="btn-plus" onclick="countUp(this, 3)">+</button>
             </div>
@@ -616,7 +767,6 @@
             <div class="zkr-hint"><span class="zkr-badge">التكرار</span><span>قلها 7 مرات</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 7</div>
               <button class="btn-plus" onclick="countUp(this, 7)">+</button>
             </div>
@@ -694,7 +844,6 @@
             <div class="zkr-hint"><span class="zkr-badge">التكرار</span><span>قلها 33 مرة لكل ذكر</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 33</div>
               <button class="btn-plus" onclick="countUp(this, 33)">+</button>
             </div>
@@ -730,7 +879,6 @@
             <div class="zkr-hint"><span class="zkr-badge">التكرار</span><span>قلها 3 مرات</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 3</div>
               <button class="btn-plus" onclick="countUp(this, 3)">+</button>
             </div>
@@ -765,6 +913,7 @@
     </div>
   </div>
 </div>
+
 <!-- ==================== التبويب الثاني: الكنوز والمواقف الطارئة ==================== -->
 <div id="treasures-path" class="tab-content">
   
@@ -796,7 +945,6 @@
             <div class="zkr-hint"><span class="zkr-badge">الحرز اليومي</span><span>كررها 100 مرة للحفظ المكتمل</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 100</div>
               <button class="btn-plus" onclick="countUp(this, 100)">+</button>
             </div>
@@ -809,7 +957,6 @@
             <div class="zkr-hint"><span class="zkr-badge">الرحمن</span><span>خفيفتان على اللسان، ثقيلتان في الميزان</span></div>
             <div class="counter-actions">
               <button class="btn-reset" onclick="resetCounter(this)">🔄</button>
-              <button type="button" onclick="copyZkrText(this)" title="نسخ الذكر" style="background: none; border: 1px solid rgba(214,168,92,0.3); color: var(--gold-soft); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem;">📋</button>
               <div class="counter-screen">0 / 100</div>
               <button class="btn-plus" onclick="countUp(this, 100)">+</button>
             </div>
@@ -925,43 +1072,6 @@ function resetCounter(button) {
 }
 
 document.addEventListener('DOMContentLoaded', updateAzkarProgress);
-
-/* ---------- السبحة الحرة ---------- */
-let freeCount = localStorage.getItem('free_tasbeeh_count') || 0;
-const freeScreen = document.getElementById('free-counter-screen');
-if(freeScreen) freeScreen.innerText = freeCount;
-
-function incrementFreeCounter() {
-    freeCount++;
-    if(freeScreen) freeScreen.innerText = freeCount;
-    localStorage.setItem('free_tasbeeh_count', freeCount);
-    if (navigator.vibrate) navigator.vibrate(25);
-}
-
-function resetFreeCounter() {
-    freeCount = 0;
-    if(freeScreen) freeScreen.innerText = freeCount;
-    localStorage.setItem('free_tasbeeh_count', freeCount);
-    if (navigator.vibrate) navigator.vibrate(15);
-}
-
-/* ---------- 📋 دالة نسخ نص الذكر ---------- */
-function copyZkrText(btn) {
-    const item = btn.closest('.zkr-item');
-    const text = item.querySelector('.zkr-text').innerText;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        const originalContent = btn.innerHTML;
-        btn.innerHTML = '✨';
-        if (navigator.vibrate) navigator.vibrate(20);
-        
-        setTimeout(() => {
-            btn.innerHTML = originalContent;
-        }, 1500);
-    }).catch(err => {
-        console.error('فشل نسخ النص:', err);
-    });
-}
 
 /* ---------- LIVE HADITH SEARCH (dorar.net JSONP) ---------- */
 const hadithQuery = document.getElementById('hadithQuery');
@@ -1088,8 +1198,147 @@ document.addEventListener('click', (e) => { if (!navMenuBox.contains(e.target) &
 </script>
 
 <script src="bot.js"></script>
+<!-- ==================== بنر تثبيت التطبيق الذكي (أندرويد + آيفون) ==================== -->
+<div id="smart-app-banner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9998; width: 92%; max-width: 480px; background: linear-gradient(135deg, #0f1730, #141d3d); border: 1px solid rgba(214, 168, 92, 0.4); border-radius: 18px; padding: 14px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); backdrop-filter: blur(12px); color: #f3efe3; font-family: 'Tajawal', sans-serif;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 2rem;">🌙</span>
+            <div>
+                <div style="font-weight: bold; color: #f0d9a8; font-size: 0.95rem;">تطبيق "زاد المؤمن"</div>
+                <div id="banner-text" style="font-size: 0.8rem; color: #93a0c2; line-height: 1.4; margin-top: 2px;"></div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <!-- زر الأندرويد لتنزيل APK -->
+            <a id="apk-download-btn" href="zad-al-momen.apk" download style="display: none; background: linear-gradient(135deg, #d6a85c, #b9803a); color: #1a1200; font-weight: bold; padding: 8px 14px; border-radius: 10px; text-decoration: none; font-size: 0.82rem; white-space: nowrap;">تحميل APK 📲</a>
+            <button id="banner-close-btn" style="background: none; border: none; color: #93a0c2; font-size: 1.2rem; cursor: pointer; padding: 4px;">✕</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('smart-app-banner');
+    const bannerText = document.getElementById('banner-text');
+    const apkBtn = document.getElementById('apk-download-btn');
+    const closeBtn = document.getElementById('banner-close-btn');
+
+    if (!banner) return;
+
+    // استخدام localStorage لمنع ظهور البنر مجدداً للأبد عند إغلاقه أو تحميل التطبيق
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone || localStorage.getItem('pwa_banner_closed') === 'true') return;
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isAndroid = /android/.test(ua);
+
+    if (isIOS) {
+        bannerText.innerHTML = 'للآيفون: اضغط <span style="color:#d6a85c; font-weight:bold;">مشاركة 📤</span> ثم اختر <span style="color:#d6a85c; font-weight:bold;">(إضافة إلى الشاشة الرئيسية)</span>';
+        banner.style.display = 'block';
+    } else if (isAndroid) {
+        bannerText.innerText = 'ثبّت تطبيق الأندرويد المباشر (APK) لتصفح أسرع وأسهل!';
+        apkBtn.style.display = 'inline-block';
+        banner.style.display = 'block';
+    }
+
+    // عند إغلاق البنر
+    closeBtn.addEventListener('click', () => {
+        banner.style.display = 'none';
+        localStorage.setItem('pwa_banner_closed', 'true');
+    });
+
+    // عند الضغط على تحميل الـ APK
+    if (apkBtn) {
+        apkBtn.addEventListener('click', () => {
+            localStorage.setItem('pwa_banner_closed', 'true');
+            setTimeout(() => { banner.style.display = 'none'; }, 1000);
+        });
+    }
+});
+</script>
 <script src="notifications.js"></script>
 <script src="check-update.js"></script>
+<!-- ==================== بنر التوجيه والتثبيت الذكي ==================== -->
+<div id="smart-app-banner" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9998; width: 92%; max-width: 480px; background: linear-gradient(135deg, #0f1730, #141d3d); border: 1px solid rgba(214, 168, 92, 0.4); border-radius: 18px; padding: 16px 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); backdrop-filter: blur(12px); color: #f3efe3; font-family: 'Tajawal', sans-serif;">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;">
+        <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <span style="font-size: 2.2rem;">📱</span>
+            <div>
+                <div style="font-weight: bold; color: #f0d9a8; font-size: 0.95rem; margin-bottom: 4px;">تطبيق "زاد المؤمن"</div>
+                <div id="banner-text" style="font-size: 0.82rem; color: #93a0c2; line-height: 1.6;"></div>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <a id="apk-download-btn" href="zad-al-momen.apk" download style="display: none; background: linear-gradient(135deg, #d6a85c, #b9803a); color: #1a1200; font-weight: bold; padding: 8px 14px; border-radius: 10px; text-decoration: none; font-size: 0.82rem; white-space: nowrap;">تحميل APK 📲</a>
+            <button id="banner-close-btn" style="background: none; border: none; color: #93a0c2; font-size: 1.2rem; cursor: pointer; padding: 4px;">✕</button>
+        </div>
+    </div>
+</div>
 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('smart-app-banner');
+    const bannerText = document.getElementById('banner-text');
+    const apkBtn = document.getElementById('apk-download-btn');
+    const closeBtn = document.getElementById('banner-close-btn');
+
+    if (!banner) return;
+
+    // عدم إظهار البنر إذا تم إغلاقه سابقاً من المستخدم
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isStandalone || localStorage.getItem('pwa_banner_closed') === 'true') return;
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+    const isAndroid = /android/.test(ua);
+
+    if (isIOS) {
+        bannerText.innerHTML = `التطبيق متوفر للاندرويد بس للأسف ومو موجود على الايفون بسبب بعض سياساتهم 🧐<br><br><strong>لتثبيته على الآيفون:</strong> اضغط على زر <strong>المشاركة 📤</strong> بالأسفل، ثم اختر <strong>(إضافة إلى الشاشة الرئيسية 🏠)</strong> ليعمل معك بالشكل المطلوب.`;
+        banner.style.display = 'block';
+    } else if (isAndroid) {
+        bannerText.innerText = 'ثبّت تطبيق الأندرويد المباشر (APK) لتجربة أسرع، أداء أفضل، ومواقيت صلاة دقيقة!';
+        apkBtn.style.display = 'inline-block';
+        banner.style.display = 'block';
+    }
+
+    closeBtn.addEventListener('click', () => {
+        banner.style.display = 'none';
+        localStorage.setItem('pwa_banner_closed', 'true');
+    });
+
+    if (apkBtn) {
+        apkBtn.addEventListener('click', () => {
+            localStorage.setItem('pwa_banner_closed', 'true');
+            setTimeout(() => { banner.style.display = 'none'; }, 1000);
+        });
+    }
+});
+</script>
+<!-- في نهاية ملف azkar.html -->
+
+<script>
+  // ... الأكواد القديمة الموجودة عندك بالأسفل ...
+
+  /* ---------- دالة نسخ نص الذكر المضافة جديداً ---------- */
+  function copyZkrText(btn) {
+      const item = btn.closest('.zkr-item');
+      const text = item.querySelector('.zkr-text').innerText;
+      
+      navigator.clipboard.writeText(text).then(() => {
+          const originalContent = btn.innerHTML;
+          btn.innerHTML = '✨';
+          if (navigator.vibrate) navigator.vibrate(20);
+          
+          setTimeout(() => {
+              btn.innerHTML = originalContent;
+          }, 1500);
+      }).catch(err => {
+          console.error('فشل نسخ النص:', err);
+      });
+  }
+</script>
+</body>
+</html>
 </body>
 </html>
