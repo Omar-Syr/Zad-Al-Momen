@@ -50,7 +50,7 @@ async function initNotifications() {
 }
 
 // =========================================================
-// 2. ساعة حية لتوقيت مكة المكرمة (تحدث الهيدر والكبسولة معاً)
+// 2. ساعة حية لتوقيت مكة المكرمة
 // =========================================================
 function startMakkahClock() {
     function updateClock() {
@@ -111,7 +111,7 @@ async function fetchPrayerTimes(lat, lng) {
 }
 
 // =========================================================
-// 4. تقويم هجري احتياطي محلي أثناء انتظار التحميل
+// 4. تقويم هجري احتياطي محلي
 // =========================================================
 function displayHijriDateFallback() {
     try {
@@ -309,25 +309,46 @@ function injectAppBottomNav() {
     const isDuaa = path.includes('duaa.html');
     const isAzkar = path.includes('azkar.html');
 
+    const isNative = document.body.classList.contains('is-native-app') || (window.Capacitor && window.Capacitor.isNativePlatform());
+
     const nav = document.createElement('div');
     nav.id = 'liquid-app-nav';
     nav.className = 'liquid-bottom-nav';
 
+    let extraNavButton = "";
+
+    if (isNative) {
+        extraNavButton = `
+            <button type="button" onclick="openWebsiteLink()" class="liquid-nav-item">
+                <span style="font-size: 1.15rem;">🌐</span>
+                <span>الموقع</span>
+            </button>
+        `;
+    } else {
+        extraNavButton = `
+            <button type="button" onclick="openAppModal()" class="liquid-nav-item">
+                <span style="font-size: 1.15rem;">📱</span>
+                <span>تطبيق</span>
+            </button>
+        `;
+    }
+
     nav.innerHTML = `
         <a href="index.html" class="liquid-nav-item ${isHome ? 'active' : ''}">
-            <span style="font-size: 1.25rem;">🏠</span>
+            <span style="font-size: 1.15rem;">🏠</span>
             <span>الرئيسية</span>
         </a>
         <a href="duaa.html" class="liquid-nav-item ${isDuaa ? 'active' : ''}">
-            <span style="font-size: 1.25rem;">🤲</span>
+            <span style="font-size: 1.15rem;">🤲</span>
             <span>الدعاء</span>
         </a>
         <a href="azkar.html" class="liquid-nav-item ${isAzkar ? 'active' : ''}">
-            <span style="font-size: 1.25rem;">📿</span>
+            <span style="font-size: 1.15rem;">📿</span>
             <span>الأذكار</span>
         </a>
+        ${extraNavButton}
         <button type="button" onclick="openAppBotModal()" class="liquid-nav-item">
-            <span style="font-size: 1.25rem;">💬</span>
+            <span style="font-size: 1.15rem;">💬</span>
             <span>المساعد</span>
         </button>
     `;
@@ -340,9 +361,66 @@ function openAppBotModal() {
     if (chatBtn) chatBtn.click();
 }
 
-function toggleThemeMode() {
-    const themeBtn = document.getElementById('themeBtn');
-    if (themeBtn) themeBtn.click();
+function openWebsiteLink() {
+    window.open('https://omar-i3.github.io/Zad-Al-Momen/', '_blank');
+}
+
+// نافذة معلومات التطبيق والتحميل (تظهر للمستخدم في الموقع فقط)
+function openAppModal() {
+    let modal = document.getElementById('app-info-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'app-info-modal';
+        modal.style.cssText = "display: none; position: fixed; inset: 0; z-index: 9999999; background: rgba(3, 5, 14, 0.8); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;";
+        document.body.appendChild(modal);
+    }
+
+    const ua = navigator.userAgent.toLowerCase();
+    const isIOS = /iphone|ipad|ipod/.test(ua);
+
+    let contentHTML = "";
+
+    if (isIOS) {
+        contentHTML = `
+            <div style="font-weight: bold; color: #f0d9a8; font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span>📱</span> تطبيق "زاد المؤمن"
+            </div>
+            <div style="font-size: 0.9rem; color: #93a0c2; line-height: 1.8; margin-bottom: 20px;">
+                التطبيق متوفر للاندرويد بس للأسف ومو موجود على الايفون بسبب بعض سياساتهم 🧐<br><br>
+                <strong>لتثبيته على الآيفون / الآيباد:</strong><br>
+                1. افتح الموقع من متصفح <strong>سفاري (Safari)</strong>.<br>
+                2. اضغط على زر <strong>المشاركة 📤</strong> بالأسفل.<br>
+                3. اختر <strong>(إضافة إلى الشاشة الرئيسية 🏠)</strong> ليعمل معك بالكامل في الخلفية!
+            </div>
+        `;
+    } else {
+        contentHTML = `
+            <div style="font-weight: bold; color: #f0d9a8; font-size: 1.1rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span>📱</span> تطبيق "زاد المؤمن"
+            </div>
+            <div style="font-size: 0.9rem; color: #93a0c2; line-height: 1.8; margin-bottom: 20px;">
+                التطبيق متوفر للاندرويد فقط ليس مثل بعض الاجهزة🧐<br><br>
+                حمل تطبيق الأندرويد المباشر (APK) لتستمتع بأداء أسرع، مواقيت صلاة دقيقة، وتنبيهات الأذكار تعمل في الخلفية بكفاءة عالية واوفلاين بدون نت (بإستنثاء الذكاء الاصطناعي)!
+            </div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <a href="zad-al-momen.apk" download style="display: inline-block; background: linear-gradient(135deg, #d6a85c, #b9803a); color: #1a1200; font-weight: bold; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(214,168,92,0.3);">تحميل تطبيق APK 📲</a>
+            </div>
+        `;
+    }
+
+    modal.innerHTML = `
+        <div style="background: linear-gradient(135deg, #0f1730, #141d3d); border: 1px solid rgba(214, 168, 92, 0.4); border-radius: 22px; padding: 24px; width: 100%; max-width: 400px; color: #f3efe3; font-family: 'Tajawal', sans-serif; box-shadow: 0 15px 40px rgba(0,0,0,0.7); text-align: right;">
+            ${contentHTML}
+            <button type="button" onclick="closeAppModal()" style="width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(214,168,92,0.3); color: #f3efe3; padding: 10px; border-radius: 12px; font-weight: bold; cursor: pointer; font-family: 'Tajawal', sans-serif;">إغلاق</button>
+        </div>
+    `;
+
+    modal.style.display = 'flex';
+}
+
+function closeAppModal() {
+    const modal = document.getElementById('app-info-modal');
+    if (modal) modal.style.display = 'none';
 }
 
 function enableHapticTouch() {
