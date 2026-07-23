@@ -443,6 +443,139 @@
 
   /* ---------- PRINT ---------- */
   #printArea{display:none;}
+  /* =========================================================
+   🚀 التنسيقات المخصصة لـ "واجهة التطبيق الذكي" (App Only UI)
+   ========================================================= */
+
+body.is-native-app {
+    /* إلغاء تحديد النصوص وتأخير اللمس لزيادة الاستجابة */
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    padding-top: env(safe-area-inset-top, 15px) !important;
+    padding-bottom: 90px !important;
+    background-attachment: fixed;
+}
+
+/* إخفاء عناصر القوائم والملاحة الخاصة بالموقع داخل التطبيق */
+body.is-native-app .nav-dropdown-wrapper,
+body.is-native-app #smart-app-banner,
+body.is-native-app .theme-btn {
+    display: none !important;
+}
+
+/* 📱 شريط علوي احترافي للتطبيق (App Header Bar) */
+.app-top-bar {
+    display: none;
+}
+body.is-native-app .app-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: rgba(15, 23, 48, 0.7);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(214, 168, 92, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/* 📿 إعادة تشكيل الكروت لتصبح على شكل قائمة تطبيق جوال (App List Rows) */
+body.is-native-app .main-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 0 16px !important;
+}
+
+body.is-native-app .portal-card {
+    min-height: auto !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    text-align: right !important;
+    padding: 16px 20px !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(214, 168, 92, 0.25) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.is-native-app .portal-card:active {
+    transform: scale(0.97) !important;
+    background: rgba(214, 168, 92, 0.1) !important;
+    transition: transform 0.1s ease !important;
+}
+
+body.is-native-app .portal-icon {
+    font-size: 2.2rem !important;
+    margin-bottom: 0 !important;
+    margin-left: 15px !important;
+}
+
+body.is-native-app .portal-title {
+    font-size: 1.2rem !important;
+    margin-bottom: 2px !important;
+}
+
+body.is-native-app .portal-desc {
+    font-size: 0.8rem !important;
+    max-width: 100% !important;
+}
+
+body.is-native-app .portal-btn {
+    display: none !important; /* إخفاء زر "دخول القسم" للتبسيط */
+}
+
+/* 🧭 الشريط السفلي السائل (Liquid Bottom Dock) */
+.liquid-bottom-nav {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 400px;
+    height: 62px;
+    background: rgba(15, 23, 48, 0.75);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(214, 168, 92, 0.35);
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+}
+
+.liquid-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #93a0c2;
+    background: none;
+    border: none;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 0.72rem;
+    font-weight: bold;
+    gap: 2px;
+    text-decoration: none;
+    width: 22%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+.liquid-nav-item.active {
+    color: #f0d9a8;
+    background: rgba(214, 168, 92, 0.15);
+}
+
+.liquid-nav-item:active {
+    transform: scale(0.92);
+}
 </style>
 </head>
 <body>
@@ -1512,6 +1645,30 @@ document.getElementById('hadithSearchForm').addEventListener('submit', (e)=>{
   @keyframes chatSlideUp { from { opacity: 0; transform: translateY(15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
   #chat-messages::-webkit-scrollbar { width: 5px; }
   #chat-messages::-webkit-scrollbar-thumb { background: rgba(214, 168, 92, 0.2); border-radius: 10px; }
+  /* =========================================================
+   🌅 التأثيرات التفاعلية للشمس والقمر حسب وقت اليوم
+   ========================================================= */
+
+/* 1. حالة النهار والظهر (شمس مشعة ذهبية) */
+.moon.state-sun-day {
+    background: radial-gradient(circle at 35% 30%, #fff7d1, #ffd700 55%, #ff9100 100%) !important;
+    box-shadow: 0 0 70px 18px rgba(255, 215, 0, 0.65), 0 0 130px 45px rgba(255, 145, 0, 0.28) !important;
+    transform: translateY(-5px) scale(1.05);
+}
+
+/* 2. حالة العصر والغروب (شمس برتقالية دافئة تغرب رويداً) */
+.moon.state-sun-sunset {
+    background: radial-gradient(circle at 35% 30%, #ffb703, #fb8500 60%, #d62828 100%) !important;
+    box-shadow: 0 0 55px 14px rgba(251, 133, 0, 0.55), 0 0 110px 38px rgba(214, 40, 40, 0.22) !important;
+    transform: translateY(12px) scale(0.95); /* هبوط خفيف محاكي للغروب */
+}
+
+/* 3. حالة الليل (قمر زاد المؤمن الهادئ) */
+.moon.state-moon-night {
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 55%, #8a6a34 100%) !important;
+    box-shadow: 0 0 60px 10px rgba(214,168,92,0.45), 0 0 120px 40px rgba(214,168,92,0.15) !important;
+    transform: translateY(0) scale(1);
+}
 </style>
 
 <script>

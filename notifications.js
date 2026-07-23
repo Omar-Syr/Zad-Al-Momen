@@ -1,14 +1,31 @@
-// إحداثيات مدينة جدة الدقيقة (في حال عدم تفعيل الـ GPS)
+// =========================================================
+// 📍 الإعدادات الإحداثية الافتراضية (مدينة جدة)
+// =========================================================
 const DEFAULT_LAT = 21.5433;
 const DEFAULT_LNG = 39.1728;
 
+// =========================================================
+// 📿 قائمة الأذكار المخصصة للودجت
+// =========================================================
+const WIDGET_AZKAR = [
+    { title: "☀️ أذكار الصباح", text: "أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له." },
+    { title: "🌙 أذكار المساء", text: "أمسينا وأمسى الملك لله، والحمد لله، أعوذ بكلمات الله التامات من شر ما خلق." },
+    { title: "💎 كنز من كنوز الجنة", text: "لا حول ولا قوة إلا بالله العلي العظيم." },
+    { title: "⚖️ ثقيلتان في الميزان", text: "سبحان الله وبحمده، سبحان الله العظيم." },
+    { title: "🛡️ حرز وحماية", text: "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم." },
+    { title: "🌿 استغفار وتوبة", text: "أستغفر الله العظيم الذي لا إله إلا هو الحي القيوم وأتوب إليه." },
+    { title: "🕌 الصلاة على النبي", text: "اللهم صلِّ وسلم وبارك على نبينا محمد." },
+    { title: "✨ دعاء الكرب", text: "لا إله إلا أنت سبحانك إني كنت من الظالمين." }
+];
+
+// =========================================================
 // 1. تشغيل النظام والساعة والتنبيهات
+// =========================================================
 async function initNotifications() {
-    // تشغيل ساعة مكة الحية والتقويم الاحتياطي
     startMakkahClock();
     displayHijriDateFallback();
 
-    // طلب إذن الإشعارات (فقط إذا لم يتم اتخاذ قرار سابقاً من المستخدم)
+    // طلب إذن الإشعارات (فقط إذا لم يتم اتخاذ قرار سابقاً)
     if ('Notification' in window && Notification.permission === 'default') {
         try {
             await Notification.requestPermission();
@@ -34,7 +51,9 @@ async function initNotifications() {
     }
 }
 
+// =========================================================
 // 2. ساعة حية لتوقيت مكة المكرمة (تتحدث كل ثانية)
+// =========================================================
 function startMakkahClock() {
     function updateClock() {
         const now = new Date();
@@ -55,7 +74,9 @@ function startMakkahClock() {
     setInterval(updateClock, 1000);
 }
 
-// 3. جلب مواقيت الصلاة والتاريخ الهجري الدقيق من السيرفر
+// =========================================================
+// 3. جلب مواقيت الصلاة والتاريخ الهجري والودجت
+// =========================================================
 async function fetchPrayerTimes(lat, lng) {
     try {
         const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=4&school=0`);
@@ -63,18 +84,30 @@ async function fetchPrayerTimes(lat, lng) {
         const timings = data.data.timings;
         const dateData = data.data.date;
 
-        // تحديث التاريخ الهجري الدقيق 100% من السيرفر (تقويم أم القرى)
+        let hijriText = "";
+
+        // تحديث التاريخ الهجري الدقيق (تقويم أم القرى)
         if (dateData && dateData.hijri) {
             const h = dateData.hijri;
+            hijriText = `📅 ${h.weekday.ar}، ${h.day} ${h.month.ar} ${h.year} هـ`;
             const hijriElem = document.getElementById('hijri-date-text');
             if (hijriElem) {
-                hijriElem.innerText = `📅 ${h.weekday.ar}، ${h.day} ${h.month.ar} ${h.year} هـ`;
+                hijriElem.innerText = hijriText;
             }
         }
 
-        // رسم المواقيت وجدولتها
+        // أ) رسم المواقيت على الواجهة
         renderPrayerTimesUI(timings);
+
+        // ب) ☀️/🌅/🌙 تحديث شكل الشمس أو القمر تلقائياً
+        updateCelestialVisuals(timings);
+
+        // ج) جدولة التنبيهات
         scheduleAllNotifications(timings);
+
+        // د) 📲 تحديث بيانات الودجت في ذاكرة الجوال
+        updateWidgetStorage(timings, hijriText);
+
     } catch (err) {
         console.error("خطأ في جلب مواقيت الصلاة:", err);
         const loadingElem = document.getElementById('prayer-loading');
@@ -82,7 +115,9 @@ async function fetchPrayerTimes(lat, lng) {
     }
 }
 
+// =========================================================
 // 4. تقويم هجري احتياطي محلي أثناء انتظار التحميل
+// =========================================================
 function displayHijriDateFallback() {
     try {
         const today = new Date();
@@ -102,7 +137,9 @@ function displayHijriDateFallback() {
     }
 }
 
+// =========================================================
 // 5. رسم مواقيت الصلاة بصرياً على الشاشة
+// =========================================================
 function renderPrayerTimesUI(timings) {
     const loadingElem = document.getElementById('prayer-loading');
     const gridElem = document.getElementById('prayer-grid');
@@ -131,13 +168,70 @@ function renderPrayerTimesUI(timings) {
 
 // تحويل صيغة الوقت إلى 12 ساعة (ص / م)
 function formatTime12(time24) {
+    if (!time24) return "--:--";
     let [hours, minutes] = time24.split(':').map(Number);
     let period = hours >= 12 ? 'م' : 'ص';
     hours = hours % 12 || 12;
     return `${hours}:${minutes < 10 ? '0' : ''}${minutes} ${period}`;
 }
 
-// 6. جدولة التنبيهات في تطبيق Capacitor
+// =========================================================
+// ☀️/🌅/🌙 6. تحويل شكل الشمس والقمر تلقائياً
+// =========================================================
+function updateCelestialVisuals(timings) {
+    const celestialElem = document.querySelector('.moon');
+    if (!celestialElem) return;
+
+    const now = new Date();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    const parseMinutes = (timeStr) => {
+        const [h, m] = timeStr.split(':').map(Number);
+        return h * 60 + m;
+    };
+
+    const sunrise = parseMinutes(timings.Sunrise);
+    const asr = parseMinutes(timings.Asr);
+    const maghrib = parseMinutes(timings.Maghrib);
+
+    // ☀️ فترة النهار: من الشروق حتى صلاة العصر
+    if (currentMinutes >= sunrise && currentMinutes < asr) {
+        celestialElem.className = 'moon state-sun-day';
+    } 
+    // 🌅 فترة العصر والغروب: من العصر حتى أذان المغرب
+    else if (currentMinutes >= asr && currentMinutes < maghrib) {
+        celestialElem.className = 'moon state-sun-sunset';
+    } 
+    // 🌙 فترة الليل: من المغرب حتى الشروق
+    else {
+        celestialElem.className = 'moon state-moon-night';
+    }
+}
+
+// =========================================================
+// 📱 7. حفظ بيانات الودجت في ذاكرة الجوال
+// =========================================================
+async function updateWidgetStorage(timings, hijriText) {
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) {
+        const { Preferences } = window.Capacitor.Plugins;
+
+        const randomZkr = WIDGET_AZKAR[Math.floor(Math.random() * WIDGET_AZKAR.length)];
+
+        await Preferences.set({ key: 'widget_fajr', value: formatTime12(timings.Fajr) });
+        await Preferences.set({ key: 'widget_dhuhr', value: formatTime12(timings.Dhuhr) });
+        await Preferences.set({ key: 'widget_asr', value: formatTime12(timings.Asr) });
+        await Preferences.set({ key: 'widget_maghrib', value: formatTime12(timings.Maghrib) });
+        await Preferences.set({ key: 'widget_isha', value: formatTime12(timings.Isha) });
+        
+        await Preferences.set({ key: 'widget_hijri', value: hijriText });
+        await Preferences.set({ key: 'widget_zkr_title', value: randomZkr.title });
+        await Preferences.set({ key: 'widget_zkr_text', value: randomZkr.text });
+    }
+}
+
+// =========================================================
+// 8. جدولة التنبيهات في تطبيق Capacitor
+// =========================================================
 async function scheduleAllNotifications(timings) {
     const iqamahOffsets = { Fajr: 20, Dhuhr: 15, Asr: 15, Maghrib: 10, Isha: 15 };
     const prayerNamesAr = { Fajr: "الفجر", Dhuhr: "الظهر", Asr: "العصر", Maghrib: "المغرب", Isha: "العشاء" };
@@ -190,4 +284,90 @@ async function scheduleAllNotifications(timings) {
     }
 }
 
-window.addEventListener('DOMContentLoaded', initNotifications);
+// =========================================================
+// 🚀 9. محرك تحويل واجهة الجوال للتطبيق (App Shell Logic)
+// =========================================================
+function initAppNativeEngine() {
+    const isCapacitor = window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform();
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    if (isCapacitor || isStandalone || window.location.search.includes('mode=app')) {
+        document.body.classList.add('is-native-app');
+        injectAppHeader();
+        injectAppBottomNav();
+        enableHapticTouch();
+    }
+}
+
+function injectAppHeader() {
+    if (document.getElementById('app-top-header')) return;
+
+    const topBar = document.createElement('div');
+    topBar.id = 'app-top-header';
+    topBar.className = 'app-top-bar';
+    topBar.innerHTML = `
+        <div style="font-family: 'Amiri', serif; font-size: 1.2rem; font-weight: bold; color: var(--gold-soft);">زاد المؤمن 🌙</div>
+        <button onclick="toggleThemeMode()" style="background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 1rem; cursor: pointer;">🌞</button>
+    `;
+    document.body.insertBefore(topBar, document.body.firstChild);
+}
+
+function injectAppBottomNav() {
+    if (document.getElementById('liquid-app-nav')) return;
+
+    const path = window.location.pathname;
+    const isHome = path.includes('index.html') || path.endsWith('/') || path === '';
+    const isDuaa = path.includes('duaa.html');
+    const isAzkar = path.includes('azkar.html');
+
+    const nav = document.createElement('div');
+    nav.id = 'liquid-app-nav';
+    nav.className = 'liquid-bottom-nav';
+
+    nav.innerHTML = `
+        <a href="index.html" class="liquid-nav-item ${isHome ? 'active' : ''}">
+            <span style="font-size: 1.2rem;">🏠</span>
+            <span>الرئيسية</span>
+        </a>
+        <a href="duaa.html" class="liquid-nav-item ${isDuaa ? 'active' : ''}">
+            <span style="font-size: 1.2rem;">🤲</span>
+            <span>الدعاء</span>
+        </a>
+        <a href="azkar.html" class="liquid-nav-item ${isAzkar ? 'active' : ''}">
+            <span style="font-size: 1.2rem;">📿</span>
+            <span>الأذكار</span>
+        </a>
+        <button type="button" onclick="openAppBotModal()" class="liquid-nav-item">
+            <span style="font-size: 1.2rem;">💬</span>
+            <span>المساعد</span>
+        </button>
+    `;
+
+    document.body.appendChild(nav);
+}
+
+function openAppBotModal() {
+    const chatBtn = document.getElementById('chat-trigger-btn');
+    if (chatBtn) chatBtn.click();
+}
+
+function toggleThemeMode() {
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) themeBtn.click();
+}
+
+function enableHapticTouch() {
+    document.querySelectorAll('.portal-card, .liquid-nav-item, button').forEach(elem => {
+        elem.addEventListener('touchstart', () => {
+            if (navigator.vibrate) navigator.vibrate(15);
+        }, { passive: true });
+    });
+}
+
+// =========================================================
+// 🏁 تشغيل السكريپتات فور تحميل الصفحة
+// =========================================================
+window.addEventListener('DOMContentLoaded', () => {
+    initNotifications();
+    initAppNativeEngine();
+});
