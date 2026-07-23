@@ -279,9 +279,14 @@ async function scheduleAllNotifications(timings) {
 // 🚀 9. محرك تحويل واجهة الجوال للتطبيق (App Shell Logic)
 // =========================================================
 function initAppNativeEngine() {
-    document.body.classList.add('is-native-app');
-    injectAppHeader();
-    injectAppBottomNav();
+    const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
+
+    if (isNative) {
+        document.body.classList.add('is-native-app');
+        injectAppHeader();
+    }
+
+    injectAppBottomNav(isNative);
     enableHapticTouch();
 }
 
@@ -301,22 +306,6 @@ function injectAppHeader() {
     document.body.insertBefore(topBar, document.body.firstChild);
 }
 
-// =========================================================
-// 🚀 محرك تحويل واجهة الجوال للتطبيق (App Shell Logic)
-// =========================================================
-function initAppNativeEngine() {
-    // التحقق الحقيقي: هل يعمل الموقع داخل تطبيق Capacitor الأندرويد (APK) أم متصفح عادي؟
-    const isNative = !!(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform());
-
-    if (isNative) {
-        document.body.classList.add('is-native-app');
-        injectAppHeader();
-    }
-
-    injectAppBottomNav(isNative);
-    enableHapticTouch();
-}
-
 function injectAppBottomNav(isNative) {
     if (document.getElementById('liquid-app-nav')) return;
 
@@ -328,11 +317,33 @@ function injectAppBottomNav(isNative) {
     const nav = document.createElement('div');
     nav.id = 'liquid-app-nav';
     nav.className = 'liquid-bottom-nav';
+    
+    // شريط سفلي مرتفع مع مسافة أمان لمنع التداخل نهائياً
+    nav.style.cssText = `
+        position: fixed !important;
+        bottom: max(20px, env(safe-area-inset-bottom, 20px)) !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 92% !important;
+        max-width: 400px !important;
+        height: 62px !important;
+        background: rgba(15, 23, 48, 0.88) !important;
+        backdrop-filter: blur(25px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(25px) saturate(200%) !important;
+        border: 1px solid rgba(214, 168, 92, 0.35) !important;
+        border-radius: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-around !important;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        z-index: 99999 !important;
+        box-sizing: border-box !important;
+        padding: 0 8px !important;
+    `;
 
     let extraNavButton = "";
 
     if (isNative) {
-        // 📱 داخل تطبيق الأندرويد المثبت (APK): يظهر زر ينقله للموقع
         extraNavButton = `
             <button type="button" onclick="openWebsiteLink()" class="liquid-nav-item">
                 <span style="font-size: 1.15rem;">🌐</span>
@@ -340,7 +351,6 @@ function injectAppBottomNav(isNative) {
             </button>
         `;
     } else {
-        // 🌐 داخل المتصفح العادي (الموقع): يظهر زر تحميل التطبيق/التعليمات
         extraNavButton = `
             <button type="button" onclick="openAppModal()" class="liquid-nav-item">
                 <span style="font-size: 1.15rem;">📱</span>
@@ -381,7 +391,6 @@ function openWebsiteLink() {
     window.open('https://omar-i3.github.io/Zad-Al-Momen/', '_blank');
 }
 
-// نافذة معلومات التطبيق والتحميل (تظهر للمستخدم في الموقع فقط)
 function openAppModal() {
     let modal = document.getElementById('app-info-modal');
     if (!modal) {
@@ -415,8 +424,8 @@ function openAppModal() {
                 <span>📱</span> تطبيق "زاد المؤمن"
             </div>
             <div style="font-size: 0.9rem; color: #93a0c2; line-height: 1.8; margin-bottom: 20px;">
-                التطبيق متوفر للاندرويد فقط ليس مثل بعض الاجهزة🧐<br><br>
-                حمل تطبيق الأندرويد المباشر (APK) لتستمتع بأداء أسرع، مواقيت صلاة دقيقة، وتنبيهات الأذكار تعمل في الخلفية بكفاءة عالية واوفلاين بدون نت (بإستنثاء الذكاء الاصطناعي)!
+                التطبيق متوفر للاندرويد بس للأسف ومو موجود على الايفون بسبب بعض سياساتهم 🧐<br><br>
+                حمل تطبيق الأندرويد المباشر (APK) لتستمتع بأداء أسرع، مواقيت صلاة دقيقة، وتنبيهات الأذكار تعمل في الخلفية بكفاءة عالية!
             </div>
             <div style="text-align: center; margin-bottom: 15px;">
                 <a href="zad-al-momen.apk" download style="display: inline-block; background: linear-gradient(135deg, #d6a85c, #b9803a); color: #1a1200; font-weight: bold; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-size: 0.95rem; box-shadow: 0 4px 15px rgba(214,168,92,0.3);">تحميل تطبيق APK 📲</a>
@@ -454,3 +463,4 @@ window.addEventListener('DOMContentLoaded', () => {
     initNotifications();
     initAppNativeEngine();
 });
+    
