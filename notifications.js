@@ -306,8 +306,11 @@ function injectAppHeader() {
     topBar.id = 'app-top-header';
     topBar.className = 'app-top-bar';
     topBar.innerHTML = `
-        <div style="font-family: 'Amiri', serif; font-size: 1.2rem; font-weight: bold; color: var(--gold-soft);">زاد المؤمن 🌙</div>
-        <button onclick="toggleThemeMode()" style="background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 1rem; cursor: pointer;">🌞</button>
+        <div class="app-top-info">
+            <div id="app-makkah-clock" style="font-weight: bold;">🕋 توقيت مكة: جاري...</div>
+            <div id="app-hijri-date" style="font-size: 0.72rem; opacity: 0.85;">📅 جاري التحديث...</div>
+        </div>
+        <div style="font-family: 'Amiri', serif; font-size: 1.1rem; font-weight: bold; color: #f0d9a8;">زاد المؤمن 🌙</div>
     `;
     document.body.insertBefore(topBar, document.body.firstChild);
 }
